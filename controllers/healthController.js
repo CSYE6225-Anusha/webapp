@@ -27,7 +27,7 @@ const healthCheck = async (req, res) => {
         //Checking if the user passed any request body or any query params
         if (contentLength !== undefined || contentType !== undefined || Object.keys(req.query).length !== 0) {
             // Return a 400 Bad Request response if any of the conditions are met
-            res.status(400).send();
+            return res.status(400).send();
         }
 
         // Return a 200 OK response indicating successful health check
