@@ -6,8 +6,8 @@ dotenv.config();
 
 // Create a Sequelize instance to connect to the PostgreSQL database
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-    host: 'localhost',
-    dialect: 'postgres'
+    host: process.env.host,
+    dialect: process.env.dialect
 });
 
 // The below method is triggered when there is a get call
