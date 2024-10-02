@@ -5,7 +5,7 @@ const errorHandler = require('./middlewares/errorHandler.js')
 const app = express();
 
 // Import the  routers
-const healthRouter = require('./Routes/healthRouter.js');
+const healthRouter = require('./routes/healthRouter.js');
 const userRouter = require('./routes/userRouter.js')
 
 // Use body-parser middleware to parse request bodies
