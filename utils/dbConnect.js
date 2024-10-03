@@ -4,15 +4,13 @@ const sequelize = require('../config/db.js');
 const connectDB = async () => {
     try {
       await sequelize.authenticate();
-      console.log('Connection has been established successfully🔥');
-  
       // Synchronize the database with the models  without need of dropping the tables
       // User.sync({ alter: true })
       await sequelize.sync();
+      return true;
     } catch (error) {
-      console.log(error);
-      console.log('Cannot connect to database server');
+      return false;
     }
-  };
+};
   
 module.exports = connectDB;

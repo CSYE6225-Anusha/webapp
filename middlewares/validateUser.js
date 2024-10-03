@@ -7,8 +7,18 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
     const allowedFields = ['first_name', 'last_name', 'email', 'password'];
     const receivedFields = Object.keys(req.body);
     const hasExtraFields = receivedFields.some(field => !allowedFields.includes(field));
+    const contentType = req.headers['content-type'];
+
     
     try {
+        if(Object.keys(req.query).length !== 0){
+            return res.status(400).send();
+        }
+
+        if(contentType != 'application/json'){
+            return res.status(400).send();
+        }
+
         if (hasExtraFields) {
             return res.status(400).json({ error: "Invalid fields in the request body" });
         }
@@ -25,7 +35,7 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
             }
         }
     
-        // Validate First Name (required for create, optional for update)
+        // Validate First Name 
         if (first_name) {
             if (first_name.length < 3) {
                 return res.status(400).json({ error: "First name must be at least 3 characters long" });
@@ -36,7 +46,7 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
             }
         }
     
-        // Validate Last Name (required for create, optional for update)
+        // Validate Last Name 
         if (last_name) {
             if (last_name.length < 3) {
                 return res.status(400).json({ error: "Last name must be at least 3 characters long" });
@@ -47,7 +57,7 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
             }
         }
     
-        // Validate Email (required for create, optional for update)
+        // Validate Email 
         if (email) {
             const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/;
             if (!emailRegex.test(email)) {
@@ -55,7 +65,7 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
             }
         }
     
-        // Validate Password (required for create and update)
+        // Validate Password 
         if (password) {
             const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
             if (password.length < 8) {

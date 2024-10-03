@@ -101,7 +101,7 @@ describe("user controller", () => {
             const response = await req(app)
                 .get("/v1/user/self")
                 .set("Authorization", wrongAuthorizationHeader3)  
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(401);
         });
     });
 
