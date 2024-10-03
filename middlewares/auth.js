@@ -7,7 +7,7 @@ const protect = async(req, res, next) => {
   console.log(req.headers.authorization);
 
   if (!req.headers.authorization) {
-    return res.status(400).json({ error: 'Unauthorized' });
+    return res.status(401).send();
   }
 
   const authorizationType = req.headers.authorization.split(' ')[0];
@@ -16,7 +16,7 @@ const protect = async(req, res, next) => {
   const credentials = Buffer.from(req.headers.authorization.split(' ')[1], 'base64').toString('utf-8').split(':');
 
   if (credentials.length !== 2) {
-    return res.status(400).json({ error: 'Invalid authorization format' });
+    return res.status(401).send();
   }
 
   const email = credentials[0];
@@ -26,7 +26,7 @@ const protect = async(req, res, next) => {
     const user = await User.findOne({ where: { email } });
     
     if (!user) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).send();
     }
 
     // 4. Compare password with stored hash
@@ -34,7 +34,7 @@ const protect = async(req, res, next) => {
 
     console.log(isMatch)
     if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).send();
     }
 
     // 5. User authenticated, attach to request object
@@ -42,12 +42,12 @@ const protect = async(req, res, next) => {
     next();
     }
     if (authorizationType != 'Basic') {
-        return res.status(401).json({ error: 'Unauthorized' });
+        return res.status(401).send();
     }
 
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ error: 'Cannot fetch user data' });
+    return res.status(400).send();
   }
 };
 
