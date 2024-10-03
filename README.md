@@ -1,36 +1,17 @@
-# Health Check API
+# Health Check and User API
 
 ## What it does 🤖
-- The health check API allows us to monitor the health of the application instance and alert us when something is not working as expected.
-- The health check API prevents us from sending traffic to unhealthy application instances and automatically replace/repair them. It also helps us improve user experience by not routing their quests to unhealthy instances.
+- Monitors application health, preventing traffic to unhealthy instances, and bootstraps the database automatically at startup.
+- Enforces Token-Based Basic Authentication for secure API access.
   
 ## Features 🚀
-- **Database Connectivity Check**: Authenticates with the PostgreSQL database. If the connection fails, returns a `503 Service Unavailable` status.
-- **Request Validation**: Ensures that no request body or query parameters are passed. If any are detected, a `400 Bad Request` status is returned.
+- **Database Bootstrapping**:  Automatically creates or updates the database schema using Sequelize ORM.
+- **Health Checks**: Ensures database connectivity with failure returning  `503 Service Unavailable`.
 - **Cache Control**: Adds `Cache-Control` headers to prevent caching of the health check responses.
-- **Method Restriction**: Accepts only `GET` requests for health checks. Other methods return a `405 Method Not Allowed` response.
-
-## How It Works 💡
-
-### Environment Setup
-
-- Uses the `dotenv` package to load environment variables for secure database configuration.
-
-### Database Connectivity
-
-- Uses Sequelize ORM to connect to PostgreSQL.
-
-### Request Validation
-
-- Verifies that no content body or query parameters are passed in the `GET` request. If content is detected, it returns a `400 Bad Request`.
-
-### Error Handling
-
-- If database authentication fails, it returns a `503 Service Unavailable` response.
-
-### Method Restriction
-
-- Handles `GET` requests for health checks. For any other HTTP methods, it responds with a `405 Method Not Allowed` .
+- **Creating User**: A user can be created using the post call and various validations are enforced as well as the password is encrypted before storing in the database.
+- **Authenticated Routes**: The get and put call for the user are authenticated routes and it is provided by the use of Token-Based Basic authentication.
+- **Method Restriction**: All other requests return `405 Method Not Allowed`.
+- **Code Quality**: Code quality to be maintained to the highest standards using integration tests.
 
 ## How to Use ⚙
 
@@ -41,12 +22,21 @@
 - `npm install` 
   
 - [x] Create a .env file and specify the following environment variables
-- `DB_NAME=<your_database_name>` \
+- `PORT=<your_port>` \
+  `DB_NAME=<your_database_name>` \
   `DB_USERNAME=<your_database_username>` \
-  `DB_PASSWORD=<your_database_password>`
+  `DB_PASSWORD=<your_database_password>` \
+  `TEST_DB_NAME=<your_testdatabase_name>` \
+  `TEST_DB_USERNAME=<your_testdatabase_username>` \
+  `TEST_DB_PASSWORD=<your_testdatabase_password>` \
+  `host=<your_database_host>` \
+  `dialect=<your_database_dialect>` 
 
 - [x] Start the server
-- `node index.js`
+- `npm start`
+
+- [x] Test the application
+- `npm test`
   
 ## Support the Project with a ⭐ 
 ```javascript
