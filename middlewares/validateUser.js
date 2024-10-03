@@ -20,40 +20,40 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
         }
 
         if (hasExtraFields) {
-            return res.status(400).json({ error: "Invalid fields in the request body" });
+            return res.status(400).send();
         }
     
         if (!first_name || !last_name || !email || !password) {
-            return res.status(400).json({ error: "Required fields are missing" });
+            return res.status(400).send();
         }
     
         // Check if user already exists (only for createUser)
         if (!isUpdate) {
             const userExists = await User.findOne({ where: { email: email } });
             if (userExists) {
-                return res.status(400).json({ error: "User already exists" });
+                return res.status(400).send();
             }
         }
     
         // Validate First Name 
         if (first_name) {
             if (first_name.length < 3) {
-                return res.status(400).json({ error: "First name must be at least 3 characters long" });
+                return res.status(400).send();
             } else if (first_name.length > 20) {
-                return res.status(400).json({ error: "First name cannot exceed 20 characters" });
+                return res.status(400).send();
             } else if (!/^[A-Za-z]+$/.test(first_name)) {
-                return res.status(400).json({ error: "First name should only contain alphabets" });
+                return res.status(400).send();
             }
         }
     
         // Validate Last Name 
         if (last_name) {
             if (last_name.length < 3) {
-                return res.status(400).json({ error: "Last name must be at least 3 characters long" });
+                return res.status(400).send();
             } else if (last_name.length > 20) {
-                return res.status(400).json({ error: "Last name cannot exceed 20 characters" });
+                return res.status(400).send();
             } else if (!/^[A-Za-z]+$/.test(last_name)) {
-                return res.status(400).json({ error: "Last name should only contain alphabets" });
+                return res.status(400).send();
             }
         }
     
@@ -61,7 +61,7 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
         if (email) {
             const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/;
             if (!emailRegex.test(email)) {
-                return res.status(400).json({ error: "Email format is invalid" });
+                return res.status(400).send();
             }
         }
     
@@ -69,11 +69,9 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
         if (password) {
             const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
             if (password.length < 8) {
-                return res.status(400).json({ error: "Password must be at least 8 characters long" });
+                return res.status(400).send();
             } else if (!passwordRegex.test(password)) {
-                return res.status(400).json({
-                    error: "Password must contain at least one alphabet, one number, and one special character",
-                });
+                return res.status(400).send();
             }
         }
     
@@ -82,7 +80,7 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
             const credentials = Buffer.from(req.headers.authorization.split(' ')[1], 'base64').toString('utf-8').split(':');
             const authEmail = credentials[0];
             if (authEmail !== email) {
-                return res.status(403).json({ error: "You cannot modify email address" });
+                return res.status(403).send();
             }
         }
     
