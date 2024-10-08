@@ -1,14 +1,8 @@
-const { Sequelize } = require('sequelize');
+const sequelize = require('../config/db.js');
 const dotenv = require('dotenv');
 
 // Load environment variables from .env file
 dotenv.config();
-
-// Create a Sequelize instance to connect to the PostgreSQL database
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-    host: process.env.host,
-    dialect: process.env.dialect
-});
 
 // The below method is triggered when there is a get call
 const healthCheck = async (req, res) => {

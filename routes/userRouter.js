@@ -4,7 +4,6 @@ const { validateCreateUser, validateUpdateUser } = require('../middlewares/valid
 const protect = require('../middlewares/auth.js');
 const { createUser, updateUser, getUser } = require('../controllers/userController.js');
 const { methodNotAllowed } = require('../controllers/healthController.js');
-const dbConnectivity = require('../middlewares/dbConnectivity.js');
 
 // Middleware to set headers for all routes in this router
 router.use((req, res, next) => {
@@ -15,14 +14,14 @@ router.use((req, res, next) => {
 router.head('/', methodNotAllowed);
 router.options('/', methodNotAllowed);
 
-router.post('/', dbConnectivity, validateCreateUser, createUser);
+router.post('/', validateCreateUser, createUser);
 
 router.all('/', methodNotAllowed);
 
 router.head('/self', methodNotAllowed);
 router.options('/self', methodNotAllowed);
-router.get('/self', dbConnectivity, protect, getUser);
-router.put('/self', dbConnectivity, protect, validateUpdateUser, updateUser);
+router.get('/self', protect, getUser);
+router.put('/self', protect, validateUpdateUser, updateUser);
 router.all('/self', methodNotAllowed);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-name: CI for Node.js and PostgreSQL
+name: CI for webapp
 
 env:
     PORT:  ${{ secrets.PORT}}
@@ -15,6 +15,7 @@ on:
     branches:
       - main 
 
+#Below are jobs for testing 
 jobs:
   test:
     name: Run Tests
