@@ -1,11 +1,9 @@
 const User = require('../models/user.js');
 const hash = require('../utils/passwordUtils.js');
-const checkDBConnection = require('../utils/dbConnect.js')
 
 const createUser = async(req,res)=>{
 
     try {
-        await checkDBConnection(res);
         const { first_name, last_name, email } = req.body
 
         const newUser = await User.create({
@@ -28,7 +26,6 @@ const createUser = async(req,res)=>{
 
 const updateUser = async (req, res) => {
     try {
-        await checkDBConnection(res);
         const user = req.user;
 
         req.body.password = hash(req.body.password);
@@ -52,7 +49,6 @@ const updateUser = async (req, res) => {
 
 const getUser = async(req,res)=>{
     try{
-        await checkDBConnection(res);
         const user = req.user;
      // Check if request includes any body by checking if there is any content 
      const contentType = req.headers['content-type'];
