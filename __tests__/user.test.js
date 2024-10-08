@@ -124,7 +124,7 @@ describe("user controller", () => {
         it("should not update user details authorization headers are not set", async () => {
             const response = await req(app)
                 .get("/v1/user/self")
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(401);
         });
         it("should not update user details the first name is more than 10 characters", async () => {
             const response = await req(app)

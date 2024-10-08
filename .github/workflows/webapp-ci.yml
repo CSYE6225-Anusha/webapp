@@ -1,4 +1,4 @@
-name: CI for Node.js and PostgreSQL
+name: CI for webapp
 
 env:
     PORT:  ${{ secrets.PORT}}
