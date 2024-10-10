@@ -13,6 +13,10 @@
 - **Method Restriction**: All other requests return `405 Method Not Allowed`.
 - **Code Quality**: Code quality to be maintained to the highest standards using integration tests.
 
+## Continuous Integration 🛠️
+
+- This project includes a CI pipeline that automatically runs tests on every pull request
+
 ## How to Use ⚙
 
 - [x] Clone the repository to your local directory
