@@ -18,16 +18,26 @@ jobs:
       - name: Set up HashiCorp Packer
         uses: hashicorp/setup-packer@v2
         with:
-          packer_version: latest  
+          packer_version: latest
 
-      # Run packer fmt -check
-      - name: Run Packer FMT Check
-        run: |
-          packer fmt -check .
-        continue-on-error: false 
+      # Initialize Packer
+      - name: Initialize Packer
+        run: packer init aws.pkr.hcl
 
-      # Run packer validate
-      - name: Run Packer Validate
+      # Format Packer Config
+      - name: Format Packer Config
+        run: packer fmt aws.pkr.hcl
+        id: fmt
+
+      # Check for Formatting Changes
+      - name: Check for Formatting Changes
         run: |
-          packer validate .
-        continue-on-error: false
+          CHANGES=$(git diff --name-only)
+          if [[ -n "$CHANGES" ]]; then
+            echo "Packer format check failed. The following files have formatting changes:"
+            echo "$CHANGES"
+            exit 1
+
+      # Validate Packer Config
+      - name: Validate Packer Config
+        run: packer validate aws.pkr.hcl
