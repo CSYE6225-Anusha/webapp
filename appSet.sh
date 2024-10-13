@@ -1,11 +1,11 @@
 #!/bin/bash
 sudo mkdir -p /opt/csye6225/app
 
-sudo cp /tmp/webapp-main.zip /opt/csye6225/app/
+sudo cp /tmp/webapp.zip /opt/csye6225/app/
 
-cd /opt/csye6225/app && sudo unzip webapp-main.zip
+cd /opt/csye6225/app && sudo unzip webapp.zip
 
-cd webapp-main
+cd webapp
 
 # Update system packages
 sudo apt-get update -y

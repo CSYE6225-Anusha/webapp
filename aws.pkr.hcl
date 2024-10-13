@@ -52,8 +52,8 @@ build {
   sources = ["source.amazon-ebs.my-ami"]
 
   provisioner "file" {
-    source      = ""
-    destination = "/tmp/webapp-main.zip"
+    source      = "./webapp.zip"
+    destination = "/tmp/webapp.zip"
   }
 
   provisioner "file" {
