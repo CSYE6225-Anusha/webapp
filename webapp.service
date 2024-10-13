@@ -1,0 +1,15 @@
+[Unit]
+Description=My Node.js Application Service
+ConditionPathExists=/opt/csye6225/app/webapp-main/.env
+After=network.target
+
+[Service]
+User=csye6225
+Group=csye6225
+WorkingDirectory=/opt/csye6225/app/webapp-main
+EnvironmentFile=/opt/csye6225/app/webapp-main/.env  
+ExecStart=/usr/bin/node /opt/csye6225/app/webapp-main/index.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

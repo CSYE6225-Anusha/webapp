@@ -1,0 +1,33 @@
+name: Packer Template Lint and Validate
+
+on:
+  pull_request:
+    branches:
+      - main  
+
+jobs:
+  packer-lint-validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Install HashiCorp Packer
+      - name: Set up HashiCorp Packer
+        uses: hashicorp/setup-packer@v2
+        with:
+          packer_version: latest  
+
+      # Run packer fmt -check
+      - name: Run Packer FMT Check
+        run: |
+          packer fmt -check .
+        continue-on-error: false 
+
+      # Run packer validate
+      - name: Run Packer Validate
+        run: |
+          packer validate .
+        continue-on-error: false
