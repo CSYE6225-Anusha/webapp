@@ -3,7 +3,7 @@ name: Packer Template Lint and Validate
 on:
   pull_request:
     branches:
-      - main  
+      - main  # Or the specific branch you're targeting for PRs
 
 jobs:
   packer-lint-validate:
@@ -18,26 +18,19 @@ jobs:
       - name: Set up HashiCorp Packer
         uses: hashicorp/setup-packer@v2
         with:
-          packer_version: latest
+          packer_version: latest  # You can specify a version, e.g., 1.7.10
 
-      # Initialize Packer
-      - name: Initialize Packer
-        run: packer init aws.pkr.hcl
+      - name: Run packer init
+        run: "packer init aws.pkr.hcl"
 
-      # Format Packer Config
-      - name: Format Packer Config
-        run: packer fmt aws.pkr.hcl
-        id: fmt
-
-      # Check for Formatting Changes
-      - name: Check for Formatting Changes
+      # Run packer fmt -check
+      - name: Run Packer FMT Check
         run: |
-          CHANGES=$(git diff --name-only)
-          if [[ -n "$CHANGES" ]]; then
-            echo "Packer format check failed. The following files have formatting changes:"
-            echo "$CHANGES"
-            exit 1
+          packer fmt -check .
+        continue-on-error: false  # Fail the workflow if formatting changes are needed
 
-      # Validate Packer Config
-      - name: Validate Packer Config
-        run: packer validate aws.pkr.hcl
+      # Run packer validate
+      - name: Run Packer Validate
+        run: |
+          packer validate .
+        continue-on-error: false  # Fail the workflow if validation fails
