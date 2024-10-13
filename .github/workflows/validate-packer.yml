@@ -20,6 +20,11 @@ jobs:
         with:
           packer_version: latest  # You can specify a version, e.g., 1.7.10
 
+      - name: Zip webapp 
+        run: |
+             zip -r webapp.zip ./
+             ls  
+
       - name: Run packer init
         run: "packer init aws.pkr.hcl"
 
