@@ -11,13 +11,13 @@ env:
 
 # This workflow is triggered on a pull request
 on:
-  push:
-    branches:
-      - main 
+  pull_request:
+    types: [closed]
 
 #Below are jobs for testing 
 jobs:
   test:
+    if: github.event.pull_request.merged == true
     name: Run Tests
     runs-on: ubuntu-latest
 
