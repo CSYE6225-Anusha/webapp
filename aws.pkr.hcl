@@ -56,7 +56,7 @@ build {
     destination = "/tmp/webapp-main.zip"
   }
 
-   provisioner "file" {
+  provisioner "file" {
     source      = "./webapp.service"
     destination = "/tmp/webapp.service"
   }
@@ -73,7 +73,7 @@ build {
     script = "appSet.sh"
   }
 
-  provisioner "shell"{
+  provisioner "shell" {
     script = "systemd.sh"
   }
 }
