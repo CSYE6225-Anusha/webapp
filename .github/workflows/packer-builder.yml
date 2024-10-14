@@ -43,6 +43,11 @@ jobs:
             POSTGRES_PASSWORD=${{ secrets.TEST_DB_PASSWORD }}
             sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
             sudo -u postgres createdb ${{ secrets.TEST_DB_NAME }}
+            
+      - name: Zip webapp 
+        run: |
+          zip -r webapp.zip ./
+          ls 
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -51,11 +56,6 @@ jobs:
       # Step 4: Run your tests, securely passing the database URL using secrets
       - name: Run tests
         run: npm test
-
-      - name: Zip webapp 
-        run: |
-          zip -r webapp.zip ./
-          ls 
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
