@@ -40,6 +40,7 @@ sudo -u postgres createdb test
 
 pwd
 sudo chown -R csye6225:csye6225 /opt/csye6225/app
+sudo chmod -R 755 /opt/csye6225/app/webapp
 ls -al
 
 
