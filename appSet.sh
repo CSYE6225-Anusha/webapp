@@ -1,16 +1,11 @@
 #!/bin/bash
-sudo mkdir -p /opt/csye6225
+sudo mkdir -p /opt/csye6225/app
 
-sudo cp /tmp/webapp.zip /opt/csye6225/webapp.zip
+sudo cp /tmp/webapp.zip /opt/csye6225/app/
 
-cd /opt/csye6225/
+cd /opt/csye6225/app && sudo unzip webapp.zip
 
-sudo unzip webapp.zip -d /opt/csye6225/webapp
-# cd /opt/csye6225/app && sudo unzip webapp.zip
-
-# cd webapp 
-
-cd /opt/csye6225/webapp
+cd webapp
 
 # Update system packages
 sudo apt-get update -y
@@ -44,7 +39,7 @@ sudo -u postgres createdb test
 # Install project dependencies
 
 ls -al
+sudo chown -R csye6225:csye6225 /opt/csye6225/webapp
+
 
 npm install
-
-

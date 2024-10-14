@@ -1,14 +1,14 @@
 [Unit]
 Description=My Node.js Application Service
-ConditionPathExists=/opt/csye6225/webapp/.env
+ConditionPathExists=/opt/csye6225/app/webapp/.env
 After=network.target
 
 [Service]
 User=csye6225
 Group=csye6225
-WorkingDirectory=/opt/csye6225/webapp
-EnvironmentFile=/opt/csye6225/webapp/.env  
-ExecStart=/usr/bin/node /opt/csye6225/webapp/index.js
+WorkingDirectory=/opt/csye6225/app/webapp
+EnvironmentFile=/opt/csye6225/app/webapp/.env  
+ExecStart=/usr/bin/node /opt/csye6225/app/webapp/index.js
 Restart=always
 
 [Install]
