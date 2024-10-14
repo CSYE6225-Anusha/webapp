@@ -38,8 +38,9 @@ sudo -u postgres createdb test
 # Example: cd yourproject
 # Install project dependencies
 
-ls -al
+pwd
 sudo chown -R csye6225:csye6225 /opt/csye6225/app
+ls -al
 
 
 npm install
