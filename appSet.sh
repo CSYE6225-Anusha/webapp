@@ -3,7 +3,7 @@ sudo mkdir -p /opt/csye6225/app
 
 sudo cp /tmp/webapp.zip /opt/csye6225/app/
 
-cd /opt/csye6225/app && sudo unzip webapp.zip
+cd /opt/csye6225/app && sudo unzip webapp.zip -d webapp
 
 cd webapp
 
