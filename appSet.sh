@@ -39,7 +39,7 @@ sudo -u postgres createdb test
 # Install project dependencies
 
 ls -al
-sudo chown -R csye6225:csye6225 /opt/csye6225/webapp
+sudo chown -R csye6225:csye6225 /opt/csye6225/app
 
 
 npm install
