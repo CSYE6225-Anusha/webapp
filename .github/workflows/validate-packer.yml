@@ -3,7 +3,7 @@ name: Packer Template Lint and Validate
 on:
   pull_request:
     branches:
-      - main  # Or the specific branch you're targeting for PRs
+      - main  
 
 jobs:
   packer-lint-validate:
@@ -18,12 +18,26 @@ jobs:
       - name: Set up HashiCorp Packer
         uses: hashicorp/setup-packer@v2
         with:
-          packer_version: latest  # You can specify a version, e.g., 1.7.10
+          packer_version: latest  
 
       - name: Zip webapp 
         run: |
              zip -r webapp.zip ./
-             ls  
+             ls 
+      
+      - name: Configure Packer Environment Variables
+        run: |
+          set -x  
+          touch aws.pkvars.hcl
+          echo aws_region=\"${{ secrets.AWS_REGION }}\" >> aws.pkvars.hcl
+          echo instance_type=\"${{ vars.INSTANCE_TYPE }}\" >> aws.pkvars.hcl
+          echo ssh_username=\"${{ vars.SSH_USERNAME }}\" >> aws.pkvars.hcl
+          echo source_ami=\"${{ vars.SOURCE_AMI }}\" >> aws.pkvars.hcl
+          echo subnet_id=\"${{ vars.SUBNET_ID }}\" >> aws.pkvars.hcl
+
+      - name: Verify aws.pkvars.hcl Creation
+        run: cat aws.pkvars.hcl
+        
 
       - name: Run packer init
         run: "packer init aws.pkr.hcl"
@@ -31,11 +45,10 @@ jobs:
       # Run packer fmt -check
       - name: Run Packer FMT Check
         run: |
-          packer fmt -check .
-        continue-on-error: false  # Fail the workflow if formatting changes are needed
+          packer fmt -check aws.pkr.hcl
+        continue-on-error: false  
 
       # Run packer validate
       - name: Run Packer Validate
-        run: |
-          packer validate .
-        continue-on-error: false  # Fail the workflow if validation fails
+        run: "packer validate --var-file=aws.pkvars.hcl ./aws.pkr.hcl"
+        continue-on-error: false  

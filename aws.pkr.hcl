@@ -8,19 +8,33 @@ packer {
 }
 
 variable "aws_region" {
-  default = "us-east-1"
+  type = string
 }
 
 variable "subnet_id" {
-  default = "subnet-05c96a6b1f6c1b7f8"
+  type = string
 }
 
 variable "source_ami" {
-  default = "ami-0866a3c8686eaeeba"
+  type = string
+}
+
+variable instance_type {
+  type = string
+}
+
+
+variable ssh_username {
+  type = string
+}
+
+variable "ami_users" {
+  type    = list(string)
+  default = ["676206927418", "767828742291"]
 }
 
 source "amazon-ebs" "my-ami" {
-  region          = "${var.aws_region}"
+  region          = var.aws_region
   ami_name        = "csye6225_f24_app_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for Assignment 4"
 
@@ -28,20 +42,23 @@ source "amazon-ebs" "my-ami" {
     "us-east-1"
   ]
 
+  ami_users = var.ami_users
+
+
   aws_polling {
     delay_seconds = 120
     max_attempts  = 50
   }
 
-  instance_type = "t2.micro"
-  source_ami    = "${var.source_ami}"
-  ssh_username  = "ubuntu"
-  subnet_id     = "${var.subnet_id}"
+  instance_type = var.instance_type
+  source_ami    = var.source_ami
+  ssh_username  = var.ssh_username
+  subnet_id     = var.subnet_id
 
   # Launch block device mappings
   launch_block_device_mappings {
     device_name           = "/dev/sda1"
-    volume_size           = 25
+    volume_size           = "25"
     volume_type           = "gp2"
     delete_on_termination = true
   }
