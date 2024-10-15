@@ -29,7 +29,7 @@ jobs:
         run: |
           set -x  
           touch aws.pkrvars.hcl
-          echo aws_region=${{ vars.AWS_REGION }} >> aws.pkrvars.hcl
+          echo aws_region=${{ secrets.AWS_REGION }} >> aws.pkrvars.hcl
           echo instance_type=${{ vars.INSTANCE_TYPE }} >> aws.pkrvars.hcl
           echo ssh_username=${{ vars.SSH_USERNAME }} >> aws.pkrvars.hcl
           echo source_ami=${{ vars.SOURCE_AMI }} >> aws.pkrvars.hcl
