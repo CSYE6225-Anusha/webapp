@@ -28,7 +28,7 @@ jobs:
       - name: Configure Packer Environment Variables
         run: |
           set -x  
-          echo > aws.pkrvars.hcl
+          touch aws.pkrvars.hcl
           echo aws_region="${{ vars.AWS_REGION }}" >> aws.pkrvars.hcl
           echo device_name="${{ vars.DEVICE_NAME }}" >> aws.pkrvars.hcl
           echo instance_type="${{ vars.INSTANCE_TYPE }}" >> aws.pkrvars.hcl
