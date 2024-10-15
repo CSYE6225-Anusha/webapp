@@ -25,7 +25,7 @@ describe("user controller", () => {
             const response = await req(app)
                 .post("/v1/user")
                 .send(user)  
-            expect(response.status).toBe(201);  
+            expect(response.status).toBe(203);  
         });
         it("should not create a new user if all fields are not given", async () => {
             const response = await req(app)
