@@ -16,7 +16,7 @@ on:
 
 #Below are jobs for testing 
 jobs:
-  test:
+  test2:
     if: github.event.pull_request.merged == true
     name: Run Tests
     runs-on: ubuntu-latest
