@@ -35,6 +35,7 @@ jobs:
           echo source_ami=\"${{ vars.SOURCE_AMI }}\" >> aws.pkrvars.hcl
           echo subnet_id=\"${{ vars.SUBNET_ID }}\" >> aws.pkrvars.hcl
           echo volume_size=\"${{ vars.VOLUME_SIZE }}\" >> aws.pkrvars.hcl
+          cat aws.pkvars.hcl
           echo volume_type=\"${{vars.VOLUME_TYPE}}\" >> aws.pkvars.hcl
 
       - name: Run packer init
