@@ -8,13 +8,10 @@ env:
     host : ${{ secrets.HOST }}
     dialect: ${{ secrets.DIALECT }}
 
-
-# This workflow is triggered on a pull request
 on:
   pull_request:
     types: [closed]
 
-#Below are jobs for testing 
 jobs:
   test2:
     if: github.event.pull_request.merged == true
@@ -22,18 +19,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the code from the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js version
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.14.0'
         
-
-      # Setup 3: Set up postgres and create database test
       - name: Set up Postgres
         run: |
             sudo apt update
@@ -63,11 +56,9 @@ jobs:
           ls 
           cat .env
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Run your tests, securely passing the database URL using secrets
       - name: Run tests
         run: npm test
 
@@ -93,6 +84,7 @@ jobs:
           echo source_ami=\"${{ vars.SOURCE_AMI }}\" >> aws.pkrvars.hcl
           echo subnet_id=\"${{ vars.SUBNET_ID }}\" >> aws.pkrvars.hcl
           echo volume_size=\"${{ vars.VOLUME_SIZE }}\" >> aws.pkrvars.hcl
+          echo volume_type=\"${{vars.VOLUME_TYPE}}\" >> aws.pkvars.hcl
             
       - name: Initialize Packer
         run: "packer init ./aws.pkr.hcl"
