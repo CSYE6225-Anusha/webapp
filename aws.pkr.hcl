@@ -71,7 +71,7 @@ source "amazon-ebs" "my-ami" {
   launch_block_device_mappings {
     device_name           = "${var.device_name}"
     volume_size           = "${var.volume_size}"
-    volume_type           = "gp2"
+    volume_type           = "${var.volume_type}"
     delete_on_termination = true
   }
 }

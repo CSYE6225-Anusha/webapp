@@ -76,15 +76,16 @@ jobs:
 
       - name: Configure Packer Environment Variables
         run: |
+          set -x  
           echo > aws.pkrvars.hcl
-          echo aws_region=\"${{ vars.AWS_REGION }}\" >> aws.pkrvars.hcl
-          echo device_name=\"${{vars.DEVICE_NAME }}\" >> aws.pkrvars.hcl
-          echo instance_type=\"${{ vars.INSTANCE_TYPE }}\" >> aws.pkrvars.hcl
-          echo ssh_username=\"${{ vars.SSH_USERNAME }}\" >> aws.pkrvars.hcl
-          echo source_ami=\"${{ vars.SOURCE_AMI }}\" >> aws.pkrvars.hcl
-          echo subnet_id=\"${{ vars.SUBNET_ID }}\" >> aws.pkrvars.hcl
-          echo volume_size=\"${{ vars.VOLUME_SIZE }}\" >> aws.pkrvars.hcl
-          echo volume_type="gp2" >> aws.pkvars.hcl
+          echo aws_region="${{ vars.AWS_REGION }}" >> aws.pkrvars.hcl
+          echo device_name="${{ vars.DEVICE_NAME }}" >> aws.pkrvars.hcl
+          echo instance_type="${{ vars.INSTANCE_TYPE }}" >> aws.pkrvars.hcl
+          echo ssh_username="${{ vars.SSH_USERNAME }}" >> aws.pkrvars.hcl
+          echo source_ami="${{ vars.SOURCE_AMI }}" >> aws.pkrvars.hcl
+          echo subnet_id="${{ vars.SUBNET_ID }}" >> aws.pkrvars.hcl
+          echo volume_size="${{ vars.VOLUME_SIZE }}" >> aws.pkrvars.hcl
+          echo volume_type="${{ vars.VOLUME_TYPE }}" >> aws.pkrvars.hcl
             
       - name: Initialize Packer
         run: "packer init ./aws.pkr.hcl"
