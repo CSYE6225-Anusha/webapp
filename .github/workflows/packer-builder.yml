@@ -78,11 +78,11 @@ jobs:
         run: |
           set -x  
           echo > aws.pkvars.hcl
-          echo aws_region="${{ vars.AWS_REGION }}" >> aws.pkvars.hcl
-          echo instance_type="${{ vars.INSTANCE_TYPE }}" >> aws.pkvars.hcl
-          echo ssh_username="${{ vars.SSH_USERNAME }}" >> aws.pkvars.hcl
-          echo source_ami="${{ vars.SOURCE_AMI }}" >> aws.pkvars.hcl
-          echo subnet_id="${{ vars.SUBNET_ID }}" >> aws.pkvars.hcl
+          echo aws_region=\"${{ vars.AWS_REGION }}\" >> aws.pkvars.hcl
+          echo instance_type=\"${{ vars.INSTANCE_TYPE }}\" >> aws.pkvars.hcl
+          echo ssh_username=\"${{ vars.SSH_USERNAME }}\" >> aws.pkvars.hcl
+          echo source_ami=\"${{ vars.SOURCE_AMI }}\" >> aws.pkvars.hcl
+          echo subnet_id=\"${{ vars.SUBNET_ID }}\" >> aws.pkvars.hcl
             
       - name: Initialize Packer
         run: "packer init ./aws.pkr.hcl"
