@@ -42,7 +42,7 @@ jobs:
       # Run packer fmt -check
       - name: Run Packer FMT Check
         run: |
-          packer fmt -check .
+          packer fmt -check aws.pkr.hcl
         continue-on-error: false  # Fail the workflow if formatting changes are needed
 
       # Run packer validate

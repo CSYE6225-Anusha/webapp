@@ -8,7 +8,7 @@ packer {
 }
 
 variable "aws_region" {
-  type = string
+  type    = string
   default = "us-east-1"
 }
 
@@ -20,23 +20,23 @@ variable "source_ami" {
   type = string
 }
 
-variable device_name{
+variable device_name {
   type = string
 }
 
-variable instance_type{
+variable instance_type {
   type = string
 }
 
-variable volume_size{
+variable volume_size {
   type = number
 }
 
-variable volume_type{
+variable volume_type {
   type = string
 }
 
-variable ssh_username{
+variable ssh_username {
   type = string
 }
 
