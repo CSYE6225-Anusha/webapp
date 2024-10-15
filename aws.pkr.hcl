@@ -20,21 +20,10 @@ variable "source_ami" {
   type = string
 }
 
-variable device_name {
-  type = string
-}
-
 variable instance_type {
   type = string
 }
 
-variable volume_size {
-  type = number
-}
-
-variable volume_type {
-  type = string
-}
 
 variable ssh_username {
   type = string
@@ -69,9 +58,9 @@ source "amazon-ebs" "my-ami" {
 
   # Launch block device mappings
   launch_block_device_mappings {
-    device_name           = "${var.device_name}"
-    volume_size           = "${var.volume_size}"
-    volume_type           = "${var.volume_type}"
+    device_name           = "/dev/sda1"
+    volume_size           = "25"
+    volume_type           = "gp2"
     delete_on_termination = true
   }
 }
