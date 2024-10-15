@@ -29,11 +29,11 @@ jobs:
         run: |
           set -x  
           touch aws.pkvars.hcl
-          echo aws_region="${{ secrets.AWS_REGION }}" >> aws.pkvars.hcl
-          echo instance_type="${{ vars.INSTANCE_TYPE }}" >> aws.pkvars.hcl
-          echo ssh_username="${{ vars.SSH_USERNAME }}" >> aws.pkvars.hcl
-          echo source_ami="${{ vars.SOURCE_AMI }}" >> aws.pkvars.hcl
-          echo subnet_id="${{ vars.SUBNET_ID }}" >> aws.pkvars.hcl
+          echo aws_region=\"${{ secrets.AWS_REGION }}\" >> aws.pkvars.hcl
+          echo instance_type=\"${{ vars.INSTANCE_TYPE }}\" >> aws.pkvars.hcl
+          echo ssh_username=\"${{ vars.SSH_USERNAME }}\" >> aws.pkvars.hcl
+          echo source_ami=\"${{ vars.SOURCE_AMI }}\" >> aws.pkvars.hcl
+          echo subnet_id=\"${{ vars.SUBNET_ID }}\" >> aws.pkvars.hcl
 
       - name: Verify aws.pkvars.hcl Creation
         run: cat aws.pkvars.hcl
