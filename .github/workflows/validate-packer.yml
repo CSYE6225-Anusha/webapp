@@ -38,6 +38,10 @@ jobs:
           echo volume_size="${{ vars.VOLUME_SIZE }}" >> aws.pkrvars.hcl
           echo volume_type="${{ vars.VOLUME_TYPE }}" >> aws.pkrvars.hcl
 
+      - name: Verify aws.pkvars.hcl Creation
+        run: ls -l aws.pkvars.hcl
+        
+
       - name: Run packer init
         run: "packer init aws.pkr.hcl"
 
@@ -45,7 +49,6 @@ jobs:
       - name: Run Packer FMT Check
         run: |
           packer fmt -check aws.pkr.hcl
-          cat aws.pkvars.hcl
         continue-on-error: false  
 
       # Run packer validate
