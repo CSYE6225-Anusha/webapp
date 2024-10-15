@@ -8,7 +8,7 @@ packer {
 }
 
 variable "aws_region" {
-  type    = string
+  type = string
 }
 
 variable "subnet_id" {
