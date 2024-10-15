@@ -35,8 +35,7 @@ jobs:
           echo source_ami=\"${{ vars.SOURCE_AMI }}\" >> aws.pkrvars.hcl
           echo subnet_id=\"${{ vars.SUBNET_ID }}\" >> aws.pkrvars.hcl
           echo volume_size=\"${{ vars.VOLUME_SIZE }}\" >> aws.pkrvars.hcl
-          cat aws.pkvars.hcl
-          echo volume_type=\"${{vars.VOLUME_TYPE}}\" >> aws.pkvars.hcl
+          echo volume_type="gp2" >> aws.pkvars.hcl
 
       - name: Run packer init
         run: "packer init aws.pkr.hcl"
@@ -45,6 +44,7 @@ jobs:
       - name: Run Packer FMT Check
         run: |
           packer fmt -check aws.pkr.hcl
+          cat aws.pkvars.hcl
         continue-on-error: false  
 
       # Run packer validate
