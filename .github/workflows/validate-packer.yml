@@ -43,7 +43,7 @@ jobs:
         run: "packer init aws.pkr.hcl"
 
       # Run packer fmt -check
-      - name: Run Packer FMT Check
+      - name: Run Packer FMT
         run: |
           packer fmt -check aws.pkr.hcl
         continue-on-error: false  
