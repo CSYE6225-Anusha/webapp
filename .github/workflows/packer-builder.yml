@@ -91,4 +91,7 @@ jobs:
         run: "packer validate --var-file=aws.pkvars.hcl ./aws.pkr.hcl"
 
       - name: Packer build
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: "packer build --var-file=aws.pkvars.hcl ./aws.pkr.hcl"

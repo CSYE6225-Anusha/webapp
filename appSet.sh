@@ -28,8 +28,7 @@ sudo systemctl start postgresql
 sudo systemctl enable postgresql
 
 # Create and Alter PostgreSQL user and database
-POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}
-sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
+sudo -u postgres psql -c "ALTER USER '$POSTGRES_USER' WITH PASSWORD '$POSTGRES_PASSWORD';"
 sudo -u postgres createdb dev
 sudo -u postgres createdb test
 
