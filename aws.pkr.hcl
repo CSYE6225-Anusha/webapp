@@ -28,11 +28,11 @@ variable ssh_username {
   type = string
 }
 
-variable POSTGRES_PASSWORD{
-  type=string
+variable POSTGRES_PASSWORD {
+  type = string
 }
 
-variable POSTGRES_USER{
+variable POSTGRES_USER {
   type = string
 }
 
@@ -97,7 +97,7 @@ build {
   provisioner "shell" {
     script = "appSet.sh"
     environment_vars = [
-      "POSTGRES_USER=${var.POSTGRES_USER}"
+      "POSTGRES_USER=${var.POSTGRES_USER}",
       "POSTGRES_PASSWORD=${var.POSTGRES_PASSWORD}"
     ]
   }
