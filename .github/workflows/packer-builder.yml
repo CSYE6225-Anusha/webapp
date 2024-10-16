@@ -83,6 +83,8 @@ jobs:
           echo ssh_username=\"${{ vars.SSH_USERNAME }}\" >> aws.pkvars.hcl
           echo source_ami=\"${{ vars.SOURCE_AMI }}\" >> aws.pkvars.hcl
           echo subnet_id=\"${{ vars.SUBNET_ID }}\" >> aws.pkvars.hcl
+          echo POSTGRES_USER=\"${{ secrets.POSTGRES_USER }}\" >> aws.pkvars.hcl
+          echo POSTGRES_PASSWORD=\"${{ secrets.POSTGRES_PASSWORD }}\" >> aws.pkvars.hcl
             
       - name: Initialize Packer
         run: "packer init ./aws.pkr.hcl"
@@ -91,4 +93,7 @@ jobs:
         run: "packer validate --var-file=aws.pkvars.hcl ./aws.pkr.hcl"
 
       - name: Packer build
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: "packer build --var-file=aws.pkvars.hcl ./aws.pkr.hcl"

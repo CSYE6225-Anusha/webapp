@@ -28,6 +28,14 @@ variable ssh_username {
   type = string
 }
 
+variable POSTGRES_PASSWORD {
+  type = string
+}
+
+variable POSTGRES_USER {
+  type = string
+}
+
 variable "ami_users" {
   type    = list(string)
   default = ["676206927418", "767828742291"]
@@ -88,6 +96,10 @@ build {
 
   provisioner "shell" {
     script = "appSet.sh"
+    environment_vars = [
+      "POSTGRES_USER=${var.POSTGRES_USER}",
+      "POSTGRES_PASSWORD=${var.POSTGRES_PASSWORD}"
+    ]
   }
 
   provisioner "shell" {
