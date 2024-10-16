@@ -90,7 +90,7 @@ build {
     script = "appSet.sh"
   }
 
-   provisioner "shell" {
+  provisioner "shell" {
     inline = [
       "sudo apt-get remove -y git"
     ]
