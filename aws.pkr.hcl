@@ -90,6 +90,12 @@ build {
     script = "appSet.sh"
   }
 
+   provisioner "shell" {
+    inline = [
+      "sudo apt-get remove -y git"
+    ]
+  }
+
   provisioner "shell" {
     script = "systemd.sh"
   }
