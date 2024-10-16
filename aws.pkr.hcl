@@ -32,6 +32,14 @@ variable POSTGRES_PASSWORD {
   type = string
 }
 
+variable DB_NAME {
+  type = string
+}
+
+variable TEST_DB_NAME {
+  type = string
+}
+
 variable POSTGRES_USER {
   type = string
 }
@@ -98,7 +106,9 @@ build {
     script = "appSet.sh"
     environment_vars = [
       "POSTGRES_USER=${var.POSTGRES_USER}",
-      "POSTGRES_PASSWORD=${var.POSTGRES_PASSWORD}"
+      "POSTGRES_PASSWORD=${var.POSTGRES_PASSWORD}",
+      "DB_NAME=${var.DB_NAME}",
+      "TEST_DB_NAME=${var.TEST_DB_NAME}"
     ]
   }
 

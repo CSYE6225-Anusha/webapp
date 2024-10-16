@@ -36,6 +36,8 @@ jobs:
           echo subnet_id=\"${{ vars.SUBNET_ID }}\" >> aws.pkvars.hcl
           echo POSTGRES_USER=\"${{ secrets.POSTGRES_USER }}\" >> aws.pkvars.hcl
           echo POSTGRES_PASSWORD=\"${{ secrets.POSTGRES_PASSWORD }}\" >> aws.pkvars.hcl
+          echo DB_NAME=\"${{ secrets.DB_NAME }}\" >> aws.pkvars.hcl
+          echo TEST_DB_NAME=\"${{ secrets.TEST_DB_NAME }}\" >> aws.pkvars.hcl
 
       - name: Verify aws.pkvars.hcl Creation
         run: cat aws.pkvars.hcl
