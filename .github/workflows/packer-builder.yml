@@ -9,12 +9,12 @@ env:
     dialect: ${{ secrets.DIALECT }}
 
 on:
-  pull_request:
-    types: [closed]
+  push:
+    branches:
+      main
 
 jobs:
   test2:
-    if: github.event.pull_request.merged == true
     name: Run Tests
     runs-on: ubuntu-latest
 
