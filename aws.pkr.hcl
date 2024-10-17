@@ -44,33 +44,33 @@ variable POSTGRES_USER {
   type = string
 }
 
-variable ami_regions{
-  type = list
+variable ami_regions {
+  type    = list
   default = ["us-east-1"]
 }
 
-variable device_name{
-  type = string
+variable device_name {
+  type    = string
   default = "/dev/sda1"
 }
 
-variable volume_size{
-  type = string
+variable volume_size {
+  type    = string
   default = "25"
 }
 
-variable volume_type{
-  type = string
+variable volume_type {
+  type    = string
   default = "gp2"
 }
 
-variable delay_seconds{
-  type = number
+variable delay_seconds {
+  type    = number
   default = 120
 }
 
-variable max_attempts{
-  type = number 
+variable max_attempts {
+  type    = number
   default = 50
 }
 
