@@ -44,6 +44,36 @@ variable POSTGRES_USER {
   type = string
 }
 
+variable ami_regions{
+  type = list
+  default = ["us-east-1"]
+}
+
+variable device_name{
+  type = string
+  default = "/dev/sda1"
+}
+
+variable volume_size{
+  type = string
+  default = "25"
+}
+
+variable volume_type{
+  type = string
+  default = "gp2"
+}
+
+variable delay_seconds{
+  type = number
+  default = 120
+}
+
+variable max_attempts{
+  type = number 
+  default = 50
+}
+
 variable "ami_users" {
   type    = list(string)
   default = ["676206927418", "767828742291"]
@@ -54,16 +84,13 @@ source "amazon-ebs" "my-ami" {
   ami_name        = "csye6225_f24_app_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for Assignment 4"
 
-  ami_regions = [
-    "us-east-1"
-  ]
+  ami_regions = var.ami_regions
 
   ami_users = var.ami_users
 
-
   aws_polling {
-    delay_seconds = 120
-    max_attempts  = 50
+    delay_seconds = var.delay_seconds
+    max_attempts  = var.max_attempts
   }
 
   instance_type = var.instance_type
@@ -73,9 +100,9 @@ source "amazon-ebs" "my-ami" {
 
   # Launch block device mappings
   launch_block_device_mappings {
-    device_name           = "/dev/sda1"
-    volume_size           = "25"
-    volume_type           = "gp2"
+    device_name           = var.device_name
+    volume_size           = var.volume_size
+    volume_type           = var.volume_type
     delete_on_termination = true
   }
 }
