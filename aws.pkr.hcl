@@ -45,7 +45,7 @@ variable POSTGRES_USER {
 }
 
 variable ami_regions {
-  type    = list
+  type    = list(string)
   default = ["us-east-1"]
 }
 
