@@ -112,7 +112,7 @@ build {
   sources = ["source.amazon-ebs.my-ami"]
 
   provisioner "file" {
-    source      = "./webapp.zip"
+    source = "C:\\Users\\anush\\OneDrive\\Desktop\\webapp.zip"
     destination = "/tmp/webapp.zip"
   }
 
@@ -131,12 +131,12 @@ build {
 
   provisioner "shell" {
     script = "appSet.sh"
-    environment_vars = [
-      "POSTGRES_USER=${var.POSTGRES_USER}",
-      "POSTGRES_PASSWORD=${var.POSTGRES_PASSWORD}",
-      "DB_NAME=${var.DB_NAME}",
-      "TEST_DB_NAME=${var.TEST_DB_NAME}"
-    ]
+    // environment_vars = [
+    //   "POSTGRES_USER=${var.POSTGRES_USER}",
+    //   "POSTGRES_PASSWORD=${var.POSTGRES_PASSWORD}",
+    //   "DB_NAME=${var.DB_NAME}",
+    //   "TEST_DB_NAME=${var.TEST_DB_NAME}"
+    // ]
   }
 
   provisioner "shell" {
