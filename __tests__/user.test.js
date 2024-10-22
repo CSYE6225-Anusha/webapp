@@ -23,49 +23,49 @@ describe("user controller", () => {
     describe("createUser", () => {
         it("should create a new user ", async () => {
             const response = await req(app)
-                .post("/v2/user")
+                .post("/v1/user")
                 .send(user)  
             expect(response.status).toBe(201);  
         });
         it("should not create a new user if all fields are not given", async () => {
             const response = await req(app)
-                .post("/v2/user")
+                .post("/v1/user")
                 .send(user2)  
             expect(response.status).toBe(400);  
         });
         it("should not create a new user if email already exists", async()=>{
             const response = await req(app)
-                .post("/v2/user")
+                .post("/v1/user")
                 .send(user)
             expect(response.status).toBe(400);
         });
         it("should not create user details if he didn't use strong password", async () => {
             const response = await req(app)
-            .post("/v2/user")
+            .post("/v1/user")
             .send({...user, password: "Apple", email: "anu@gmail.com"})
             expect(response.status).toBe(400);
         });
         it("should not create user if email format  is wrong", async () => {
             const response = await req(app)
-            .post("/v2/user")
+            .post("/v1/user")
             .send({...user, password: "Apple", email: "anugmail.com"})
             expect(response.status).toBe(400);
         });
         it("should not create user details the first name contains anything other than alphabets", async () => {
             const response = await req(app)
-            .post("/v2/user")
+            .post("/v1/user")
             .send({...user, first_name: "Apple123", email: "sai@outlook.com"})
             expect(response.status).toBe(400);
         });
         it("should not create user details the last name is less than 3 characters", async () => {
             const response = await req(app)
-            .post("/v2/user")
+            .post("/v1/user")
             .send({...user, last_name: "Ap", email: "saiPrashanth@outlook.com"})
             expect(response.status).toBe(400);
         });
         it("should not create user details if invalid fields are given", async () => {
             const response = await req(app)
-            .post("/v2/user")
+            .post("/v1/user")
             .send({...user, address: "1163 Boylston St", email: "Praneeth@outlook.com"})
             expect(response.status).toBe(400);
         });
@@ -87,19 +87,19 @@ describe("user controller", () => {
     describe("getUser", () => {
         it("should return user details", async () => {
             const response = await req(app)
-                .get("/v2/user/self")
+                .get("/v1/user/self")
                 .set("Authorization", authorizationHeader)  
             expect(response.status).toBe(200);
         });
         it("should not return user details if he is unauthorized", async () => {
             const response = await req(app)
-                .get("/v2/user/self")
+                .get("/v1/user/self")
                 .set("Authorization", wrongAuthorizationHeader)  
             expect(response.status).toBe(401);
         });
         it("should not return user details if he didnt use basic authentication", async () => {
             const response = await req(app)
-                .get("/v2/user/self")
+                .get("/v1/user/self")
                 .set("Authorization", wrongAuthorizationHeader3)  
             expect(response.status).toBe(401);
         });
@@ -116,31 +116,31 @@ describe("user controller", () => {
     describe("putUser",()=>{
         it("should modify user details", async()=>{
             const response = await req(app)
-                .put("/v2/user/self")
+                .put("/v1/user/self")
                 .set("Authorization", authorizationHeader)
                 .send(updateUser)
             expect(response.status).toBe(204);
         });
         it("should not update user details authorization headers are not set", async () => {
             const response = await req(app)
-                .get("/v2/user/self")
+                .get("/v1/user/self")
             expect(response.status).toBe(401);
         });
         it("should not update user details the first name is more than 10 characters", async () => {
             const response = await req(app)
-            .post("/v2/user")
+            .post("/v1/user")
             .send({...user, first_name: "AppleMangoBanana"})
             expect(response.status).toBe(400);
         });
         it("should not update user details if user wants to update email", async () => {
             const response = await req(app)
-            .post("/v2/user")
+            .post("/v1/user")
             .send({email: "Srujana@outlook.com"})
             expect(response.status).toBe(400);
         });
         it("should not return user details if he is unauthorized", async () => {
             const response = await req(app)
-                .get("/v2/user/self")
+                .get("/v1/user/self")
                 .set("Authorization", wrongAuthorizationHeader2)  
             expect(response.status).toBe(401);
         });
@@ -149,7 +149,7 @@ describe("user controller", () => {
     describe("methodNotAllowed",()=>{
         it("Any call apart from get, put and post should be deined", async()=>{
             const response = await req(app)
-                .delete("/v2/user/self")
+                .delete("/v1/user/self")
             expect(response.status).toBe(405);
         })
     })

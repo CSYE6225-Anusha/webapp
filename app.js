@@ -18,7 +18,7 @@ app.use(errorHandler);
 app.use('/healthz', healthRouter);
 
 //Route for  user endpoint
-app.use('/v2/user', userRouter );
+app.use('/v1/user', userRouter );
 
 // For all other end points 
 app.use('*', (req, res) => {
