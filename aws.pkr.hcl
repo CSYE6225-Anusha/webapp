@@ -28,21 +28,21 @@ variable ssh_username {
   type = string
 }
 
-variable POSTGRES_PASSWORD {
-  type = string
-}
+// variable POSTGRES_PASSWORD {
+//   type = string
+// }
 
-variable DB_NAME {
-  type = string
-}
+// variable DB_NAME {
+//   type = string
+// }
 
-variable TEST_DB_NAME {
-  type = string
-}
+// variable TEST_DB_NAME {
+//   type = string
+// }
 
-variable POSTGRES_USER {
-  type = string
-}
+// variable POSTGRES_USER {
+//   type = string
+// }
 
 variable ami_regions {
   type    = list(string)
