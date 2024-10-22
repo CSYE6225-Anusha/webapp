@@ -36,21 +36,6 @@ jobs:
             POSTGRES_PASSWORD=${{ secrets.TEST_DB_PASSWORD }}
             sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
             sudo -u postgres createdb ${{ secrets.TEST_DB_NAME }}
-    
-      - name: Configure Environment Variables
-        run: |
-            echo > .env
-            echo PORT=${{ secrets.PORT }} >> .env
-            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
-            echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
-            echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
-            echo TEST_DB_NAME=${{ secrets.TEST_DB_NAME }} >> .env
-            echo TEST_DB_USERNAME=${{ secrets.TEST_DB_USERNAME }} >> .env
-            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
-            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-            echo TEST_DB_PASSWORD=${{ secrets.TEST_DB_PASSWORD }} >> .env
-            echo host=${{ secrets.HOST }} >> .env
-            echo dialect=${{ secrets.DIALECT }} >> .env
             
       - name: Zip webapp 
         run: |
