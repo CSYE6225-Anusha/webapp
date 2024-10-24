@@ -23,7 +23,12 @@ const protect = async(req, res, next) => {
   const password = credentials[1];
 
   // 3. Find user by email
-    const user = await User.findOne({ where: { email } });
+  let user;
+  try {
+    user = await User.findOne({ where: { email } });
+  } catch (error) {
+    return res.status(503).send();
+  }
     
     if (!user) {
       return res.status(401).send();
