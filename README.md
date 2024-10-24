@@ -7,7 +7,6 @@ This project utilizes Packer to create custom Amazon Machine Images (AMIs) for d
 ## What It Does 🤖
 
 - **Custom Image Building**: Uses Packer to create a private custom AMI in the DEV AWS account.
-- **Local Database Installation**: Installs PostgreSQL on the custom image for database requirements.
 - **Application Configuration**: Copies application artifacts, installs dependencies, and sets up services for automatic startup.
 - **User and Group Setup**: Creates a non-login system user `csye6225` and assigns ownership of application files.
 - **Systemd Integration**: Configures the application to run as a systemd service, starting automatically when an instance is launched.
@@ -17,7 +16,6 @@ This project utilizes Packer to create custom Amazon Machine Images (AMIs) for d
 - **Private AMIs**: Ensures that the custom images are private and only accessible by the user.
 - **Automated Provisioning**: Uses Packer provisioners to set up the operating system, install necessary software, and configure services.
 - **Health Checks**: Ensures that the custom image includes mechanisms to monitor application health.
-- **Configuration Management**: Handles environment variables and configuration files for seamless application setup.
 
 ## Prerequisites 📋
 
@@ -34,8 +32,7 @@ The Packer configuration consists of the following elements:
 - **AWS Configuration**: Builds the AMI in the specified region and VPC.
 - **Provisioners**:
   - **File Provisioners**: Copy application artifacts and configuration files.
-  - **Shell Provisioners**: Run scripts to update the OS, set up users, configure the database, and install dependencies.
-  - **Environment Variables**: Set using Packer variables for database configuration and application setup.
+  - **Shell Provisioners**: Run scripts to update the OS, set up users, and install dependencies.
 
 ## GitHub Actions Workflows 🛠️
 
@@ -60,7 +57,7 @@ This workflow is triggered when a pull request is merged into the main branch:
 3. **Create a pull request** to propose your changes.
 4. **Run the CI checks** to ensure all workflows pass before merging.
 
-## Environment Variables 📜
+## Packer Environment Variables 📜
 
 The Packer template uses several environment variables to configure the application:
 
@@ -69,15 +66,13 @@ The Packer template uses several environment variables to configure the applicat
 - `source_ami`: The source AMI ID (Ubuntu 24.04 LTS).
 - `instance_type`: The instance type for the build.
 - `ssh_username`: SSH username for connecting to the instance.
-- `POSTGRES_USER`, `POSTGRES_PASSWORD`, `DB_NAME`, `TEST_DB_NAME`: Database configuration variables.
-- Other configuration options for AMI users, volume settings, and polling settings.
-
+- 
 Make sure to add these environment variables as secrets in your GitHub repository. This allows the GitHub Actions workflows to access them securely:
 
 1. Go to your GitHub repository.
 2. Navigate to **Settings** > **Secrets and variables** > **Actions**.
 3. Click on **New repository secret**.
-4. Add the secrets one by one (e.g., `aws_region`, `subnet_id`, `POSTGRES_PASSWORD`, etc.).
+4. Add the secrets one by one (e.g., `aws_region`, `subnet_id`, etc.).
 
 Once added, these secrets can be used within the GitHub Actions workflows to configure the Packer build.
 

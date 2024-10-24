@@ -28,22 +28,6 @@ variable ssh_username {
   type = string
 }
 
-// variable POSTGRES_PASSWORD {
-//   type = string
-// }
-
-// variable DB_NAME {
-//   type = string
-// }
-
-// variable TEST_DB_NAME {
-//   type = string
-// }
-
-// variable POSTGRES_USER {
-//   type = string
-// }
-
 variable ami_regions {
   type    = list(string)
   default = ["us-east-1"]
@@ -131,12 +115,6 @@ build {
 
   provisioner "shell" {
     script = "appSet.sh"
-    // environment_vars = [
-    //   "POSTGRES_USER=${var.POSTGRES_USER}",
-    //   "POSTGRES_PASSWORD=${var.POSTGRES_PASSWORD}",
-    //   "DB_NAME=${var.DB_NAME}",
-    //   "TEST_DB_NAME=${var.TEST_DB_NAME}"
-    // ]
   }
 
   provisioner "shell" {
