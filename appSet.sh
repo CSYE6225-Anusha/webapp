@@ -20,22 +20,6 @@ sudo apt-get install -y nodejs
 # Verify Node.js installation
 node -v
 
-# Install PostgreSQL
-# sudo apt-get install -y postgresql postgresql-contrib
-
-# Start PostgreSQL service and enable it on boot
-# sudo systemctl start postgresql
-# sudo systemctl enable postgresql
-
-# Create and Alter PostgreSQL user and database
-# sudo -u postgres psql -c "ALTER USER $POSTGRES_USER WITH PASSWORD '$POSTGRES_PASSWORD';"
-# sudo -u postgres createdb $DB_NAME
-# sudo -u postgres createdb $TEST_DB_NAME
-
-# Change directory to your project
-# Example: cd yourproject
-# Install project dependencies
-
 pwd
 sudo chown -R csye6225:csye6225 /opt/csye6225/app
 sudo chmod -R 755 /opt/csye6225/app/webapp
