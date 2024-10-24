@@ -29,9 +29,13 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
     
         // Check if user already exists (only for createUser)
         if (!isUpdate) {
-            const userExists = await User.findOne({ where: { email: email } });
-            if (userExists) {
-                return res.status(400).send();
+            try {
+                const userExists = await User.findOne({ where: { email: email } });
+                if (userExists) {
+                    return res.status(400).send();
+                }
+            } catch (error) {
+                return res.status(503).send();
             }
         }
     
@@ -86,7 +90,7 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
     
         next();
     } catch (error) {
-        return res.status(500).json({ error: "An error occurred during validation"});
+        return res.status(500).json();
     }    
 };
 
