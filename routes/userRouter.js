@@ -5,7 +5,7 @@ const protect = require('../middlewares/auth.js');
 const { createUser, updateUser, getUser } = require('../controllers/userController.js');
 const { methodNotAllowed } = require('../controllers/healthController.js');
 
-// Middleware to set headers for all routes in this router
+// Middleware to set headers for all route's in this router
 router.use((req, res, next) => {
     res.set('Cache-Control', 'no-cache');  // Set Cache-Control header for all routes
     next();  // Proceed to the next middleware or route handler
