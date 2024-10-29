@@ -1,6 +1,7 @@
 const sequelize = require('../config/db.js');
 const app = require('../app.js');
 const req = require("supertest");
+const statsdClient = require('../libs/statsd.js');
 
 beforeAll(async () => {
     await sequelize.sync({force: true});
@@ -173,4 +174,5 @@ describe("health controller",()=>{
 
 afterAll(async () => {
     await sequelize.close();
+    statsdClient.close();
   });
