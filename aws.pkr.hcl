@@ -117,15 +117,15 @@ build {
     script = "appSet.sh"
   }
 
- # Install the CloudWatch Agent
+  # Install the CloudWatch Agent
   provisioner "shell" {
     inline = [
-      "sudo apt-get install -y wget",  # Install wget if not already installed
-      "wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb",  # Download the CloudWatch agent
-      "sudo dpkg -i amazon-cloudwatch-agent.deb",  # Install the CloudWatch agent
-      "rm amazon-cloudwatch-agent.deb",  # Clean up the downloaded package
-      "sudo systemctl enable amazon-cloudwatch-agent",  # Enable the agent to start at boot
-      "sudo systemctl start amazon-cloudwatch-agent"  # Start the CloudWatch agent
+      "sudo apt-get install -y wget",                                                                         # Install wget if not already installed
+      "wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb", # Download the CloudWatch agent
+      "sudo dpkg -i amazon-cloudwatch-agent.deb",                                                             # Install the CloudWatch agent
+      "rm amazon-cloudwatch-agent.deb",                                                                       # Clean up the downloaded package
+      "sudo systemctl enable amazon-cloudwatch-agent",                                                        # Enable the agent to start at boot
+      "sudo systemctl start amazon-cloudwatch-agent"                                                          # Start the CloudWatch agent
     ]
   }
 
