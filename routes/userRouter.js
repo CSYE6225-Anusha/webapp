@@ -5,7 +5,10 @@ const protect = require('../middlewares/auth.js');
 const { createUser, updateUser, getUser } = require('../controllers/userController.js');
 const { methodNotAllowed } = require('../controllers/healthController.js');
 const metrics = require('../utils/metrics.js');
+const multer = require('multer');
+const { insertPic } = require('../controllers/profilePicController.js');
 
+const upload = multer({ storage: multer.memoryStorage() });
 // Middleware to set headers for all routes in this router
 router.use((req, res, next) => {
     res.set('Cache-Control', 'no-cache');  // Set Cache-Control header for all routes
@@ -24,5 +27,7 @@ router.options('/self', methodNotAllowed);
 router.get('/self', metrics,protect, getUser);
 router.put('/self', metrics,protect, validateUpdateUser, updateUser);
 router.all('/self',methodNotAllowed);
+
+router.post('/self/pic',metrics,upload.single("profilePic"),protect,insertPic)
 
 module.exports = router;
