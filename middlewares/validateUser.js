@@ -92,7 +92,7 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
             const credentials = Buffer.from(req.headers.authorization.split(' ')[1], 'base64').toString('utf-8').split(':');
             const authEmail = credentials[0];
             if (authEmail !== email) {
-                return res.status(403).send();
+                return res.status(400).send();
             }
         }
     
