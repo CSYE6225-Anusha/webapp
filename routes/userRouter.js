@@ -6,7 +6,8 @@ const { createUser, updateUser, getUser } = require('../controllers/userControll
 const { methodNotAllowed } = require('../controllers/healthController.js');
 const metrics = require('../utils/metrics.js');
 const multer = require('multer');
-const { insertPic } = require('../controllers/profilePicController.js');
+const { insertPic, getPic, deletePic } = require('../controllers/profilePicController.js');
+const {validateGetNDeletePic, validatePostPic} = require('../middlewares/validatePic.js');
 
 const upload = multer({ storage: multer.memoryStorage() });
 // Middleware to set headers for all routes in this router
@@ -28,6 +29,11 @@ router.get('/self', metrics,protect, getUser);
 router.put('/self', metrics,protect, validateUpdateUser, updateUser);
 router.all('/self',methodNotAllowed);
 
-router.post('/self/pic',metrics,upload.single("profilePic"),protect,insertPic)
+router.head('/self/pic', methodNotAllowed);
+router.options('/self/pic', methodNotAllowed);
+router.post('/self/pic',metrics,validatePostPic,upload.single("profilePic"),protect,insertPic);
+router.delete('/self/pic',metrics,validateGetNDeletePic,protect,deletePic);
+router.get('/self/pic',metrics,validateGetNDeletePic,protect,getPic);
+router.all('/self/pic',methodNotAllowed);
 
 module.exports = router;
