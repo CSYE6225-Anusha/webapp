@@ -66,7 +66,7 @@ variable "ami_users" {
 source "amazon-ebs" "my-ami" {
   region          = var.aws_region
   ami_name        = "csye6225_f24_app_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
-  ami_description = "AMI for Assignment 4"
+  ami_description = "AMI for Assignment 6"
 
   ami_regions = var.ami_regions
 
@@ -115,6 +115,18 @@ build {
 
   provisioner "shell" {
     script = "appSet.sh"
+  }
+
+ # Install the CloudWatch Agent
+  provisioner "shell" {
+    inline = [
+      "sudo apt-get install -y wget",  # Install wget if not already installed
+      "wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb",  # Download the CloudWatch agent
+      "sudo dpkg -i amazon-cloudwatch-agent.deb",  # Install the CloudWatch agent
+      "rm amazon-cloudwatch-agent.deb",  # Clean up the downloaded package
+      "sudo systemctl enable amazon-cloudwatch-agent",  # Enable the agent to start at boot
+      "sudo systemctl start amazon-cloudwatch-agent"  # Start the CloudWatch agent
+    ]
   }
 
   provisioner "shell" {

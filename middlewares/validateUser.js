@@ -1,5 +1,7 @@
 const { updateUser } = require('../controllers/userController.js');
 const User = require('../models/user.js');
+const client = require('../libs/statsd.js');
+
 
 const validateUser = (isUpdate = false) => async (req, res, next) => {
     const { first_name, last_name, email, password } = req.body;
@@ -29,12 +31,18 @@ const validateUser = (isUpdate = false) => async (req, res, next) => {
     
         // Check if user already exists (only for createUser)
         if (!isUpdate) {
+            let userExists;
+            const start = Date.now();
             try {
-                const userExists = await User.findOne({ where: { email: email } });
+                userExists = await User.findOne({ where: { email: email } });
+                const duration = Date.now() - start;
+                client.timing('db.query.user_check_exists', duration);
                 if (userExists) {
                     return res.status(400).send();
                 }
             } catch (error) {
+                console.log(error)
+
                 return res.status(503).send();
             }
         }
