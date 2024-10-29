@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user.js');
+const client = require('../libs/statsd.js');
 
 const protect = async(req, res, next) => {
     try{
@@ -24,8 +25,11 @@ const protect = async(req, res, next) => {
 
   // 3. Find user by email
   let user;
+  const start = Date.now();
   try {
     user = await User.findOne({ where: { email } });
+    const duration = Date.now() - start;
+    client.timing('db.query.user_lookup', duration);
   } catch (error) {
     return res.status(503).send();
   }

@@ -132,3 +132,5 @@ dist
 
 #packer variables
 *.pkvars.hcl
+
+/logs
