@@ -19,7 +19,7 @@ const insertPic = async (req, res) => {
       return res.status(400).send();
     }
 
-    const key = `${process.env.S3_BUCKET_NAME}/${user.id}/${file.originalname}`;
+    const key = `${user.id}/${file.originalname}`;
     const params = {
       Bucket: process.env.S3_BUCKET_NAME,
       Body: file.buffer,
@@ -35,7 +35,7 @@ const insertPic = async (req, res) => {
     const dbInsertStartTime = Date.now();
     const newImage = await Image.create({
       file_name: file.originalname,
-      url: uploadResult.Key,
+      url:`${process.env.S3_BUCKET_NAME}/${uploadResult.Key}`,
       user_id: user.id,
     });
     client.timing("db.insertImageRecord.time", Date.now() - dbInsertStartTime);
@@ -97,7 +97,7 @@ const deletePic = async (req, res) => {
       return res.status(404).send();
     }
 
-    const key = `${process.env.S3_BUCKET_NAME}/${user.id}/${imageRecord.file_name}`;
+    const key = `${user.id}/${imageRecord.file_name}`;
     const params = {
       Bucket: process.env.S3_BUCKET_NAME,
       Key: key,
