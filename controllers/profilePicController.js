@@ -31,7 +31,7 @@ const insertPic = async (req, res) => {
     const uploadResult = await s3.upload(params).promise();
     client.timing("s3.uploadImage.time", Date.now() - s3UploadStartTime);
 
-    logger.info(`Saving image metadata to database for user ID: ${user.id}`);
+    logger.info(`Saving image metadata to database forr user ID: ${user.id}`);
     const dbInsertStartTime = Date.now();
     const newImage = await Image.create({
       file_name: file.originalname,
