@@ -19,7 +19,7 @@ const Image = sequelize.define('Image', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: 'Users', // This should match the name of your User model
+      model: 'Users',
       key: 'id'
     }
   },
@@ -36,6 +36,12 @@ const Image = sequelize.define('Image', {
   timestamps: true,
   createdAt: 'upload_date',
   updatedAt: false,
+  hooks: {
+    beforeCreate: (image) => {
+      // Set upload_date to only the date part
+      image.upload_date = new Date().toISOString().split('T')[0];
+    }
+  }
 });
 
 // Export the Image model
