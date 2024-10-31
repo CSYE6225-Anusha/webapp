@@ -37,6 +37,7 @@ const insertPic = async (req, res) => {
       file_name: file.originalname,
       url:`${process.env.S3_BUCKET_NAME}/${uploadResult.Key}`,
       user_id: user.id,
+      upload_date: new Date()
     });
     client.timing("db.insertImageRecord.time", Date.now() - dbInsertStartTime);
 

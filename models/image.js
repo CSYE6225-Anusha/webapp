@@ -22,7 +22,16 @@ const Image = sequelize.define('Image', {
       model: 'Users', // This should match the name of your User model
       key: 'id'
     }
-  }
+  },
+  upload_date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    validate: {
+      notNull: true,
+      notEmpty: true,
+      isDate: true,
+    },
+  },
 }, {
   timestamps: true,
   createdAt: 'upload_date',
