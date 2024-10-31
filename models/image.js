@@ -24,24 +24,14 @@ const Image = sequelize.define('Image', {
     }
   },
   upload_date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false,
-    validate: {
-      notNull: true,
-      notEmpty: true,
-      isDate: true,
-    },
+    defaultValue: DataTypes.NOW,
   },
 }, {
-  timestamps: true,
-  createdAt: 'upload_date',
+  timestamps: false,
+  createdAt: false,
   updatedAt: false,
-  hooks: {
-    beforeCreate: (image) => {
-      // Set upload_date to only the date part
-      image.upload_date = new Date().toISOString().split('T')[0];
-    }
-  }
 });
 
 // Export the Image model
