@@ -41,6 +41,11 @@ const validatePostPic = async (req, res, next) => {
         return res.status(400).send();
     }
 
+    if(Object.keys(req.query).length !== 0){
+        logger.error('Query params not allowed for upload pic');
+        return res.status(400).send();
+    }
+
     logger.info('Validation successful for POST request with a valid file upload');
     next();
 };
