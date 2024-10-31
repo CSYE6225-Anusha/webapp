@@ -36,7 +36,7 @@ router.options('/self/pic', methodNotAllowed);
 router.post('/self/pic', metrics, (req, res, next) => {
     upload.single('profilePic')(req, res, function (err) {
         if (err instanceof multer.MulterError) {
-            logger.error("Multer error:", err.message); 
+            logger.error("Multer error:", err); 
             return res.status(400).json();
         } else if (err) {
             logger.error("Unexpected error:", err); 
