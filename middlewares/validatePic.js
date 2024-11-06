@@ -33,7 +33,7 @@ const validatePostPic = async (req, res, next) => {
         return res.status(400).send();
     }
 
-    // Check if the file format is one of the allowed image formats
+    // Check if the file format is one of the allowed image formats.
     const file = req.file;
     const allowedFormats = ['image/png', 'image/jpeg', 'image/jpg'];
     if (!allowedFormats.includes(file.mimetype)) {
