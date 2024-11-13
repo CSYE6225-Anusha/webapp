@@ -80,6 +80,9 @@ const User = require('../models/user.js');
 const hash = require('../utils/passwordUtils.js');
 const logger = require('../libs/logger.js');
 const client = require('../libs/statsd.js');
+const aws = require("aws-sdk");
+
+const sns = new aws.SNS();
 
 const createUser = async (req, res) => {
 
@@ -98,6 +101,16 @@ const createUser = async (req, res) => {
         client.timing('db.createUser.time', Date.now() - dbStartTime); // DB query timing
 
         const { password, ...userData } = newUser.dataValues;
+
+        const message = JSON.stringify({
+            email: newUser.email
+        });
+
+         // Publish message to SNS topic
+         await sns.publish({
+            Message: message,
+            TopicArn: process.env.SNS_TOPIC_ARN
+        }).promise();
 
         logger.info(`User created successfully with ID: ${userData.id}`);
         
@@ -165,4 +178,41 @@ const getUser = async (req, res) => {
     }
 };
 
-module.exports = { createUser, updateUser, getUser };
+const verifyEmail = async(req,res)=>{
+    const { email, token } = req.query;
+
+    if (!email || !token) {
+        return res.status(400).json({ error: "Email and token are required query parameters." });
+    }
+
+    try {
+        // Check if the user exists with the given email
+        const user = await User.findOne({ where: { email } });
+
+        // If user doesn't exist, return 404
+        if (!user) {
+            return res.status(404).json({ error: "User not found." });
+        }
+
+        if (user.verification_token !== token) {
+            return res.status(400).json({ error: "Invalid token." });
+        }
+
+        if(new Date() > user.verification_expiry){
+            return res.status(400).json({error: "Token Expired"});
+        }
+
+        user.verification_status = true;
+        user.verification_token = null;
+        user.verification_expiry = null;
+
+        res.status(200).json({ message: "Email verification successful." });
+    } catch (error) {
+        console.error("Verification error:", error);
+        res.status(500).json({ error: "An error occurred during email verification." });
+    }
+    
+
+}
+
+module.exports = { createUser, updateUser, getUser, verifyEmail };
