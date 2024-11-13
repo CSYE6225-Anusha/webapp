@@ -81,7 +81,9 @@ const hash = require('../utils/passwordUtils.js');
 const logger = require('../libs/logger.js');
 const client = require('../libs/statsd.js');
 const aws = require("aws-sdk");
+const dotenv = require('dotenv');
 
+dotenv.config();
 const sns = new aws.SNS();
 
 const createUser = async (req, res) => {
