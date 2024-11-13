@@ -6,7 +6,7 @@ const statsdClient = require('../libs/statsd.js');
 
 const AWS = require('aws-sdk');
 
-// Mock the SNS and S3 Services
+// Mock AWS SDK and its services
 jest.mock('aws-sdk', () => {
     const SNS = {
         publish: jest.fn().mockReturnValue({
@@ -20,8 +20,14 @@ jest.mock('aws-sdk', () => {
         })
     };
 
-    return { SNS: jest.fn(() => SNS), S3: jest.fn(() => S3) };
+    // Mock AWS config update
+    const config = {
+        update: jest.fn()
+    };
+
+    return { SNS: jest.fn(() => SNS), S3: jest.fn(() => S3), config };
 });
+
 // Set up mock environment variable
 process.env.SNS_TOPIC_ARN = 'mock-sns-topic-arn';
 
