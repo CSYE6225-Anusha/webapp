@@ -82,8 +82,8 @@ const logger = require('../libs/logger.js');
 const client = require('../libs/statsd.js');
 const aws = require("aws-sdk");
 const dotenv = require('dotenv');
-
 dotenv.config();
+aws.config.update({ region: process.env.AWS_REGION });
 const sns = new aws.SNS();
 
 const createUser = async (req, res) => {
