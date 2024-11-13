@@ -1,7 +1,29 @@
 const sequelize = require('../config/db.js');
 const app = require('../app.js');
 const req = require("supertest");
+const User = require("../models/user.js");
 const statsdClient = require('../libs/statsd.js');
+
+const AWS = require('aws-sdk');
+
+// Mock the SNS and S3 Services
+jest.mock('aws-sdk', () => {
+    const SNS = {
+        publish: jest.fn().mockReturnValue({
+            promise: jest.fn().mockResolvedValue('Message published')
+        })
+    };
+
+    const S3 = {
+        upload: jest.fn().mockReturnValue({
+            promise: jest.fn().mockResolvedValue({ Location: 'https://mock-s3-url' })
+        })
+    };
+
+    return { SNS: jest.fn(() => SNS), S3: jest.fn(() => S3) };
+});
+// Set up mock environment variable
+process.env.SNS_TOPIC_ARN = 'mock-sns-topic-arn';
 
 beforeAll(async () => {
     await sequelize.sync({force: true});
@@ -22,11 +44,20 @@ const user2 ={
 
 describe("user controller", () => {
     describe("createUser", () => {
-        it("should create a new user ", async () => {
+        it("should create a new user and publish to SNS", async () => {
             const response = await req(app)
                 .post("/v1/user")
-                .send(user)  
-            expect(response.status).toBe(201);  
+                .send(user);
+    
+            expect(response.status).toBe(201);
+            expect(AWS.SNS().publish).toHaveBeenCalledTimes(1);  // Verify SNS publish was called
+            expect(AWS.SNS().publish).toHaveBeenCalledWith({
+                Message: JSON.stringify({ email: user.email }),
+                TopicArn: process.env.SNS_TOPIC_ARN
+            });
+            await User.update( {verification_status: true}, {
+                where : {email: user.email}
+            });
         });
         it("should not create a new user if all fields are not given", async () => {
             const response = await req(app)
@@ -110,7 +141,7 @@ describe("user controller", () => {
         first_name: "Anusha",
         last_name: "Tirumalasetty",
         password: "Apple$098",
-        email: "geetas@gmail.com"
+        email: "geetas@gmail.com",
     }
 
     
@@ -171,6 +202,11 @@ describe("health controller",()=>{
         expect(response.status).toBe(400);  
     });
 })
+
+// Reset mocks between tests
+afterEach(() => {
+    jest.clearAllMocks();
+});
 
 afterAll(async () => {
     await sequelize.close();

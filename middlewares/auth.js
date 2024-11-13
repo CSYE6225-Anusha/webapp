@@ -117,6 +117,12 @@ const protect = async (req, res, next) => {
         return res.status(401).send();
       }
 
+      // Check if user is verified
+      if (user.verification_status == false) {
+        logger.error(`User account not verified for email: ${email}`);
+        return res.status(400).send({ message: 'Account not verified' });
+      }
+
       // 5. User authenticated, attach to request object
       logger.info(`User authenticated successfully for email: ${email}`);
       req.user = user;

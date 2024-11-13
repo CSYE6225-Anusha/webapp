@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { validateCreateUser, validateUpdateUser } = require('../middlewares/validateUser.js');
 const protect = require('../middlewares/auth.js');
-const { createUser, updateUser, getUser } = require('../controllers/userController.js');
+const { createUser, updateUser, getUser, verifyEmail } = require('../controllers/userController.js');
 const { methodNotAllowed } = require('../controllers/healthController.js');
 const metrics = require('../utils/metrics.js');
 const multer = require('multer');
@@ -24,6 +24,8 @@ router.options('/', methodNotAllowed);
 router.post('/', metrics, validateCreateUser, createUser);
 
 router.all('/', methodNotAllowed);
+
+router.get('/verify', verifyEmail);
 
 router.head('/self', methodNotAllowed);
 router.options('/self', methodNotAllowed);
