@@ -77,6 +77,7 @@
 // module.exports = {createUser, updateUser, getUser}
 
 const User = require('../models/user.js');
+const Email = require('../models/email.js');
 const hash = require('../utils/passwordUtils.js');
 const logger = require('../libs/logger.js');
 const client = require('../libs/statsd.js');
