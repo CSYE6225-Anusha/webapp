@@ -83,6 +83,8 @@ const logger = require('../libs/logger.js');
 const client = require('../libs/statsd.js');
 const aws = require("aws-sdk");
 const dotenv = require('dotenv');
+const { v4: uuidv4 } = require("uuid");
+
 dotenv.config();
 aws.config.update({ region: process.env.AWS_REGION });
 const sns = new aws.SNS();
@@ -104,10 +106,20 @@ const createUser = async (req, res) => {
         client.timing('db.createUser.time', Date.now() - dbStartTime); // DB query timing
 
         const { password, ...userData } = newUser.dataValues;
+        const verificationToken = uuidv4();
 
         const message = JSON.stringify({
-            email: newUser.email
+            email: newUser.email,
+            verificationToken: verificationToken
         });
+
+        await User.update(
+            {
+              verification_token: verificationToken,
+              verification_expiry: new Date(Date.now() + 2 * 60 * 1000),
+            },
+            { where: { email: newUser.email } }
+          );
 
          // Publish message to SNS topic
          await sns.publish({
