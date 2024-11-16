@@ -5,7 +5,7 @@ const logger = require('../libs/logger.js');
 const validateUser = (isUpdate = false) => async (req, res, next) => {
     const { first_name, last_name, email, password } = req.body;
 
-    const allowedFields = ['first_name', 'last_name', 'email', 'password','verification_status'];
+    const allowedFields = ['first_name', 'last_name', 'email', 'password'];
     const receivedFields = Object.keys(req.body);
     const hasExtraFields = receivedFields.some(field => !allowedFields.includes(field));
     const contentType = req.headers['content-type'];

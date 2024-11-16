@@ -28,6 +28,10 @@ jest.mock('aws-sdk', () => {
     return { SNS: jest.fn(() => SNS), S3: jest.fn(() => S3), config };
 });
 
+jest.mock('uuid', () => ({
+    v4: jest.fn().mockReturnValue('786379749045hgeuydgw7239392'),
+}));
+
 // Set up mock environment variable
 process.env.SNS_TOPIC_ARN = 'mock-sns-topic-arn';
 
@@ -58,7 +62,8 @@ describe("user controller", () => {
             expect(response.status).toBe(201);
             expect(AWS.SNS().publish).toHaveBeenCalledTimes(1);  // Verify SNS publish was called
             expect(AWS.SNS().publish).toHaveBeenCalledWith({
-                Message: JSON.stringify({ email: user.email }),
+                Message: JSON.stringify({ email: user.email,verificationToken: '786379749045hgeuydgw7239392'
+                }),
                 TopicArn: process.env.SNS_TOPIC_ARN
             });
             await User.update( {verification_status: true}, {
