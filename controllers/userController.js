@@ -200,34 +200,44 @@ const getUser = async (req, res) => {
     }
 };
 
-const verifyEmail = async(req,res)=>{
+const verifyEmail = async (req, res) => {
     const { email, token } = req.query;
 
     if (!email || !token) {
+        logger.error("Missing email or token in query parameters.");
         return res.status(400).json({ error: "Email and token are required query parameters." });
     }
 
     try {
-        // Check if the user exists with the given email
+        logger.info(`Email verification initiated for email: ${email}`);
+        
+        // DB query start time
+        const dbStartTime = Date.now();
         const user = await User.findOne({ where: { email } });
-
-        // If user doesn't exist, return 404
+        client.timing('db.verifyEmail.findUser.time', Date.now() - dbStartTime);
+        
         if (!user) {
+            logger.error(`User not found for email: ${email}`);
             return res.status(404).json({ error: "User not found." });
         }
 
-        if(verification_status == true){
-            return res.status(200).json({message: "Email verification is successful."})
+        if (user.verification_status === true) {
+            logger.info(`Email already verified for email: ${email}`);
+            return res.status(200).json({ message: "Email verification is successful." });
         }
 
         if (user.verification_token !== token) {
+            logger.error(`Invalid token provided for email: ${email}`);
             return res.status(400).json({ error: "Invalid token." });
         }
 
-        if(new Date() > user.verification_expiry){
-            return res.status(400).json({error: "Token Expired"});
+        if (new Date() > user.verification_expiry) {
+            logger.error(`Verification token expired for email: ${email}`);
+            return res.status(400).json({ error: "Token expired." });
         }
 
+        // Update user status
+        const updateStartTime = Date.now();
         await User.update(
             {
                 verification_status: true,
@@ -236,14 +246,16 @@ const verifyEmail = async(req,res)=>{
             },
             { where: { email } }
         );
+        client.timing('db.verifyEmail.updateUser.time', Date.now() - updateStartTime);
+        
+        logger.info(`Email verification successful for email: ${email}`);
+        return res.status(200).json({ message: "Email verification is successful." });
 
-        res.status(200).json({ message: "Email verification is successful." });
     } catch (error) {
-        console.error("Verification error:", error);
-        res.status(500).json({ error: "An error occurred during email verification." });
+        logger.error(`Verification error for email: ${email}`, error);
+        return res.status(500).json({ error: "An error occurred during email verification." });
     }
-    
+};
 
-}
 
 module.exports = { createUser, updateUser, getUser, verifyEmail };
