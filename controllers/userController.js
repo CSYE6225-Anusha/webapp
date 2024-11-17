@@ -217,9 +217,14 @@ const verifyEmail = async(req,res)=>{
             return res.status(400).json({error: "Token Expired"});
         }
 
-        user.verification_status = true;
-        user.verification_token = null;
-        user.verification_expiry = null;
+        await User.update(
+            {
+                verification_status: true,
+                verification_token: null,
+                verification_expiry: null,
+            },
+            { where: { email } }
+        );
 
         res.status(200).json({ message: "Email verification successful." });
     } catch (error) {
