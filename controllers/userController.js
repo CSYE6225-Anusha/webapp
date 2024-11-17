@@ -129,7 +129,14 @@ const createUser = async (req, res) => {
 
         logger.info(`User created successfully with ID: ${userData.id}`);
         
-        return res.status(201).json(userData);
+        res.status(201).json({
+            id: userData.id,
+            first_name: userData.first_name,
+            last_name: userData.last_name,
+            email: userData.email,
+            account_created: userData.account_created,
+            account_updated: userData.account_updated
+        });
         
     } catch (error) {
         logger.error("Error creating user:", error);
@@ -209,6 +216,10 @@ const verifyEmail = async(req,res)=>{
             return res.status(404).json({ error: "User not found." });
         }
 
+        if(verification_status == true){
+            return res.status(200).json({message: "Email verification is successful."})
+        }
+
         if (user.verification_token !== token) {
             return res.status(400).json({ error: "Invalid token." });
         }
@@ -226,7 +237,7 @@ const verifyEmail = async(req,res)=>{
             { where: { email } }
         );
 
-        res.status(200).json({ message: "Email verification successful." });
+        res.status(200).json({ message: "Email verification is successful." });
     } catch (error) {
         console.error("Verification error:", error);
         res.status(500).json({ error: "An error occurred during email verification." });
