@@ -138,4 +138,9 @@ build {
   provisioner "shell" {
     script = "systemd.sh"
   }
+
+  post-processor "manifest" {
+    output     = "manifest.json"
+    strip_path = true
+  }
 }
