@@ -21,10 +21,10 @@ jobs:
       ami_id: ${{ steps.store.outputs.ami }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.14.0'
         
@@ -50,7 +50,7 @@ jobs:
         run: npm test
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -88,16 +88,70 @@ jobs:
           echo "$AMI_ID"
           echo "ami=$AMI_ID" >> "$GITHUB_OUTPUT"
 
-  instance_refresh:
+  instance_refresh_dev:
     needs: test2
-    name: Instance Refresh for AutoScaling
+    name: Dev Instance Refresh for AutoScaling
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Fetch Launch Template ID
+        run: |
+          LAUNCH_TEMPLATE_ID=$(aws ec2 describe-launch-templates --query 'LaunchTemplates[0].LaunchTemplateId' --output text)
+          echo "launch_template_id=$LAUNCH_TEMPLATE_ID" >> "$GITHUB_ENV"
+      
+      - name: Create New Launch Template Version
+        run: |
+          aws ec2 create-launch-template-version --launch-template-id $launch_template_id --source-version 1 --launch-template-data '{"ImageId":"${{needs.test2.outputs.ami_id}}"}' --version-description "New Version"
+      
+      - name: Fetch Auto Scaling Group Name
+        run: |
+          AUTO_SCALING_GROUP_NAME=$(aws autoscaling describe-auto-scaling-groups --query 'AutoScalingGroups[0].AutoScalingGroupName' --output text)
+          echo "auto_scaling_group_name=$AUTO_SCALING_GROUP_NAME" >> "$GITHUB_ENV"
+      
+      - name: Refresh instances
+        run: |
+          aws autoscaling start-instance-refresh --auto-scaling-group-name $auto_scaling_group_name
+
+      - name: Check instance refresh progress
+        run: |
+          ASG_REFRESH_STATUS="Pending"
+
+          while [ "$ASG_REFRESH_STATUS" != "Successful" ] && [ "$ASG_REFRESH_STATUS" != "Failed" ] && [ "$ASG_REFRESH_STATUS" != "Cancelled" ]; do
+            ASG_REFRESH_STATUS=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name $auto_scaling_group_name --query 'InstanceRefreshes[0].Status' --output text)
+      
+            # Print the current status
+            echo "Instance Refresh Status: $ASG_REFRESH_STATUS"
+      
+            # Add a sleep to avoid making too many API calls in a short time
+            sleep 30
+          done
+          # Print the reason for exit
+          if [ "$ASG_REFRESH_STATUS" == "Successful" ]; then
+            echo "Instance refresh completed successfully."
+          elif [ "$ASG_REFRESH_STATUS" == "Failed" ]; then
+            echo "Instance refresh failed."
+          elif [ "$ASG_REFRESH_STATUS" == "Cancelled" ]; then
+            echo "Instance refresh was cancelled."
+          else
+            echo "Unexpected exit status: $ASG_REFRESH_STATUS"
+          fi
+
+  instance_refresh_demo:
+    needs: test2
+    name: Demo Instance Refresh for AutoScaling
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEMO }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEMO }}
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Fetch Launch Template ID

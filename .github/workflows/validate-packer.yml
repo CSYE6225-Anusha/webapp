@@ -12,11 +12,11 @@ jobs:
     steps:
       # Checkout the code
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install HashiCorp Packer
       - name: Set up HashiCorp Packer
-        uses: hashicorp/setup-packer@v2
+        uses: hashicorp/setup-packer@main
         with:
           packer_version: latest  
 
