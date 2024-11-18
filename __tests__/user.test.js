@@ -62,7 +62,7 @@ describe("user controller", () => {
             expect(response.status).toBe(201);
             expect(AWS.SNS().publish).toHaveBeenCalledTimes(1);  // Verify SNS publish was called
             expect(AWS.SNS().publish).toHaveBeenCalledWith({
-                Message: JSON.stringify({ email: user.email,verificationToken: '786379749045hgeuydgw7239392'
+                Message: JSON.stringify({ email: user.email, first_name: user.first_name, last_name: user.last_name,verificationToken: '786379749045hgeuydgw7239392'
                 }),
                 TopicArn: process.env.SNS_TOPIC_ARN
             });

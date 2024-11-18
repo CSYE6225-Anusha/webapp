@@ -110,6 +110,8 @@ const createUser = async (req, res) => {
 
         const message = JSON.stringify({
             email: newUser.email,
+            first_name: newUser.first_name,
+            last_name: newUser.last_name,
             verificationToken: verificationToken
         });
 
