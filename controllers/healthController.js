@@ -79,9 +79,7 @@ const healthCheck = async (req, res) => {
 
         // Return a 200 OK response indicating successful health check
         logger.info("Health check passed");
-        res.status(200).json({
-            message: "hello-demo"
-        });
+        res.status(200).send();
     } catch (error) {
         // Set Cache-Control header to prevent caching in case of an error
         res.set('Cache-Control', 'no-cache');
