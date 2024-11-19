@@ -42,6 +42,14 @@ This workflow is triggered when a pull request is raised. It runs:
 - **Packer Format Check (`packer fmt`)**: Ensures the Packer template is properly formatted. If the template is modified, the workflow fails.
 - **Packer Validate (`packer validate`)**: Validates the Packer template for errors. If validation fails, the pull request cannot be merged.
 
+## Continuous Deployment
+
+This workflow triggers on merging a pull request and automates the following steps:
+- **Run Unit Tests**: Ensures application correctness.
+- **Build AMI**: Creates a new image with the latest application version and dependencies.
+- **Update Infrastructure**: Updates the Launch Template with the new AMI and refreshes the Auto Scaling Group instances.
+- **Terraform Integration**: Configures Amazon SNS via Terraform and passes SNS details to the application using EC2 user data.
+
 ### Custom Image Build
 
 This workflow is triggered when a pull request is merged into the main branch:
