@@ -16,7 +16,6 @@ app.use(errorHandler);
 
 // Route for healthz endpoint
 app.use('/healthz', healthRouter);
-app.use('/cicd', healthRouter);
 
 
 //Route for  user endpoint
